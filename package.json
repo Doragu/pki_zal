@@ -18,5 +18,8 @@
   "homepage": "https://github.com/Doragu/pki_zal#readme",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "engines": {
+    "node": "12.16.2"
   }
 }
