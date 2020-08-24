@@ -1,0 +1,22 @@
+{
+  "name": "pki_zal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Doragu/pki_zal.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Doragu/pki_zal/issues"
+  },
+  "homepage": "https://github.com/Doragu/pki_zal#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
