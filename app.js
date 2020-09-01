@@ -6,7 +6,7 @@ var app = express();
 
 const CLIENT_ID = OAuth2Data.web.client_id;
 const CLIENT_SECRET = OAuth2Data.web.client_secret;
-const REDIRECT_URL = OAuth2Data.web.redirect_uris[0]
+const REDIRECT_URL = OAuth2Data.web.redirect_uris[1]
 
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
 
@@ -45,18 +45,40 @@ app.get('/login', (req, res) => {
               console.log(err);
           } else {
               username = result.data.name;
-              // updateDB(loggedUser)
           }
-          res.render('start_page', {username: username});
+          res.redirect('/logged');
       });
   } 
 })
 
+app.get('/logged', (req, res) => {
+  getTableNames((queryResult) => {
+    res.render('logged', {username: username, queryResult: queryResult});
+  })
+})
+
+function getTableNames(callback) {
+  queryResult = '<ul>'
+
+  client.query(`SELECT * FROM pg_catalog.pg_tables WHERE schemaname = 'public'`, (error, result) => {
+    if (error) {
+      throw error
+    } 
+
+    for (let row of result.rows) {
+      queryResult = queryResult.concat("li" + JSON.stringify(row))
+    }
+
+    queryResult = queryResult.concat("</ul>")
+      
+    callback(queryResult)
+  })
+}
 
 app.get('/logout', (req, res) => {
   authed = false;
   username = ""
-  res.redirect(OAuth2Data.web.javascript_origins[0])
+  res.redirect(OAuth2Data.web.javascript_origins[1])
 })
 
 
