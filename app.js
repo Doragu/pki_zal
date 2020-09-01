@@ -6,12 +6,13 @@ var app = express();
 
 const CLIENT_ID = OAuth2Data.web.client_id;
 const CLIENT_SECRET = OAuth2Data.web.client_secret;
-const REDIRECT_URL = OAuth2Data.web.redirect_uris[1]
+const REDIRECT_URL = OAuth2Data.web.redirect_uris[0]
 
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
 
 var authed = false;
 var username = ""
+var queryResult = ""
 
 const { Client } = require('pg');
 
@@ -19,7 +20,7 @@ const client = new Client({
   connectionString: process.env.DATABASE_URL
 });
 
-client.connect();
+// client.connect();
 
 app.set('views', __dirname + '/views')
 app.set('view engine', 'pug');
@@ -55,19 +56,19 @@ app.get('/login', (req, res) => {
 
 app.get('/logged', (req, res) => {
   getTableNames((queryResult) => {
-    res.render('logged', {username: username, queryResult: queryResult})
+    res.render('start_page', {username: username, queryResult: queryResult})
   })
 })
 
 function getTableNames(callback) {
-  queryResult = '<ul>'
-  client.query(`SELECT * FROM pg_catalog.pg_tables WHERE schemaname = 'public'`, (error, result) => {
+  queryResult = 'Lista tablic:<ul>'
+  client.query(`SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname = 'public'`, (error, result) => {
     if (error) {
       throw error
     }
 
     for (let row of result.rows) {
-      queryResult = queryResult.concat("li" + JSON.stringify(row))
+      queryResult = queryResult.concat("li" + JSON.stringify(row.tablename))
     }
   
     queryResult = queryResult.concat("</ul>")
@@ -78,7 +79,8 @@ function getTableNames(callback) {
 app.get('/logout', (req, res) => {
   authed = false;
   username = ""
-  res.redirect(OAuth2Data.web.javascript_origins[1])
+  queryResult = ""
+  res.redirect(OAuth2Data.web.javascript_origins[0])
 })
 
 

@@ -11,15 +11,15 @@ body
     nav.navbar.navbar-expand-lg.navbar-dark.navbar-custom.fixed-top.container
         #navbarResponsive.collapse.navbar-collapse
         ul.navbar-nav.ml-auto
-            li.nav-item
-                span.nav-link(href='#') #{username}
-            li.nav-item
                 if username == ""
-                    a.nav-link(href='#')
+                    li.nav-item
+                        a.nav-link(href='/login') Zaloguj
                 else
-                    a.nav-link(href='/logout') Wyloguj
+                    li.nav-item
+                        span.nav-link(href='#') #{username}
+                    li.nav-item
+                        a.nav-link(href='/logout') Wyloguj
 
-section
-.container.row.align-items-center.col-lg-12.p-5
-    form(method='get' action='/login')
-        button(type='submit') Zaloguj
+    if queryResult != ""
+        .container.row
+            #{queryResult}
