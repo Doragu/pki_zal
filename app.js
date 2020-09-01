@@ -6,7 +6,7 @@ var app = express();
 
 const CLIENT_ID = OAuth2Data.web.client_id;
 const CLIENT_SECRET = OAuth2Data.web.client_secret;
-const REDIRECT_URL = OAuth2Data.web.redirect_uris[0]
+const REDIRECT_URL = OAuth2Data.web.redirect_uris[1]
 
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
 
@@ -80,7 +80,7 @@ app.get('/logout', (req, res) => {
   authed = false;
   username = ""
   queryResult = ""
-  res.redirect(OAuth2Data.web.javascript_origins[0])
+  res.redirect(OAuth2Data.web.javascript_origins[1])
 })
 
 
