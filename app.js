@@ -11,6 +11,7 @@ const REDIRECT_URL = OAuth2Data.web.redirect_uris[0]
 const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URL)
 
 var authed = false;
+var username = ""
 
 const { Client } = require('pg');
 
@@ -18,9 +19,12 @@ const client = new Client({
   connectionString: process.env.DATABASE_URL
 });
 
+app.set('views', __dirname + '/views')
+app.set('view engine', 'pug');
+app.use(express.static('public'))
+
 app.get('/', (req, res) => {
-  var response = '<nav class="navbar navbar-light bg-light"><span class="navbar-brand mb-0 h1">Navbar</span></nav><form method="get" action="/login"><button type="submit">Zaloguj</button></form>'
-  res.send(response)
+  res.render('start_page', {username: username});
 })
 
 
@@ -40,12 +44,10 @@ app.get('/login', (req, res) => {
               console.log('BŁĄD');
               console.log(err);
           } else {
-              loggedUser = result.data.name;
-              console.log(loggedUser);
+              username = result.data.name;
               // updateDB(loggedUser)
           }
-          res.send('Logged in: '.concat(loggedUser,' <img src="', result.data.picture, 
-                  '"height="23" width="23"><br><form method="get" action="/logout"><button type="submit">Wyloguj</button></form>'));
+          res.render('start_page', {username: username});
       });
   } 
 })
@@ -53,6 +55,7 @@ app.get('/login', (req, res) => {
 
 app.get('/logout', (req, res) => {
   authed = false;
+  username = ""
   res.redirect(OAuth2Data.web.javascript_origins[0])
 })
 
