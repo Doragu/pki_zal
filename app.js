@@ -20,7 +20,7 @@ const client = new Client({
   connectionString: process.env.DATABASE_URL
 });
 
-// client.connect();
+client.connect();
 
 app.set('views', __dirname + '/views')
 app.set('view engine', 'pug');
