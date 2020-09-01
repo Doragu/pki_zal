@@ -19,6 +19,8 @@ const client = new Client({
   connectionString: process.env.DATABASE_URL
 });
 
+client.connect();
+
 app.set('views', __dirname + '/views')
 app.set('view engine', 'pug');
 app.use(express.static('public'))
@@ -53,24 +55,22 @@ app.get('/login', (req, res) => {
 
 app.get('/logged', (req, res) => {
   getTableNames((queryResult) => {
-    res.render('logged', {username: username, queryResult: queryResult});
+    res.render('logged', {username: username, queryResult: queryResult})
   })
 })
 
 function getTableNames(callback) {
   queryResult = '<ul>'
-
   client.query(`SELECT * FROM pg_catalog.pg_tables WHERE schemaname = 'public'`, (error, result) => {
     if (error) {
       throw error
-    } 
+    }
 
     for (let row of result.rows) {
       queryResult = queryResult.concat("li" + JSON.stringify(row))
     }
-
+  
     queryResult = queryResult.concat("</ul>")
-      
     callback(queryResult)
   })
 }
