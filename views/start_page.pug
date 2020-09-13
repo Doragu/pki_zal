@@ -19,7 +19,16 @@ body
                         span.nav-link(href='#') #{username}
                     li.nav-item
                         a.nav-link(href='/logout') Wyloguj
+    
+    .container.row
+        if queryResult.length != 0
+            form(action='/view_page' method='GET')
+                .form-row.col
+                    label(for='selectTable') Wybierz tabele
+                    select#selectTable.form-control(name='selectTable')
+                        each val in queryResult
+                            option(value= val) #{val}
+                    button.btn.btn-primary(type='submit') Poka&zdot; zawarto&sacute;&cacute; tabeli
 
-    if queryResult != ""
-        .container.row
-            #{queryResult}
+
+
