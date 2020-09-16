@@ -17,7 +17,13 @@
   },
   "homepage": "https://github.com/Doragu/pki_zal#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "google-auth-library": "^6.0.6",
+    "googleapis": "^59.0.0",
+    "googleapis-common": "^4.4.0",
+    "pg": "^8.3.3",
+    "pug": "^3.0.0"
   },
   "engines": {
     "node": "12.16.2"

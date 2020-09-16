@@ -1,0 +1,64 @@
+doctype html
+head
+    title PKI_ZAL
+    link(href='vendor/bootstrap/css/bootstrap.css' rel='stylesheet')
+    link(href='css/one-page-wonder.css' rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900' rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i' rel='stylesheet')
+    script(src='vendor/jquery/jquery.min.js')
+    script(src='vendor/bootstrap/js/bootstrap.bundle.min.js')
+body
+    nav.navbar.navbar-expand-lg.navbar-dark.navbar-custom.fixed-top.container
+        #navbarResponsive.collapse.navbar-collapse
+        ul.navbar-nav.ml-auto
+                if username == ""
+                    li.nav-item
+                        a.nav-link(href='/login') Zaloguj
+                else
+                    li.nav-item
+                        span.nav-link(href='#') #{username}
+                    li.nav-item
+                        a.nav-link(href='/logout') Wyloguj
+    
+    .container.row
+
+        p Wynik zapytania :
+        p #{JSON.stringify(rawQueryResult)}
+
+        if columnNames != undefined
+            p Przeglądana tabela to #{selectedTable}
+            table.table
+                thead
+                    tr
+                        each val in columnNames
+                            th(scope='col') #{val}
+                tbody
+                    each row_data in queryData
+                        tr
+                            each column_data in row_data   
+                                td #{column_data}
+            .col-12
+                form(action='/view_page' method='POST')
+                    .form-row.col
+                        .form-row.col-12
+                            label Modyfikuj tabelę: 
+                        each val in columnNames
+                            .form-row.col-12
+                                label.col-3.col-lg-1 #{val} 
+                                input.col-6.col-lg-3(type='text' name=val)
+                        input.col-6.col-lg-3(type='hidden' name="selectTable" value=selectedTable)
+                        input.col-6.col-lg-3(type='hidden' name="columns" value=columnNames)
+
+                        label(for='selectOption') Wybierz opcje modyfikacji tabeli:
+                            select#selectOption.form-control(name='selectOption')
+                                option(value= "Dodaj") Dodaj 
+                                option(value= "Usuń") Usuń(wg podanych kolumn)
+                                option(value= "Modyfikuj") Zmodyfikuj(wg podanego id)
+        
+                    button.btn.btn-primary(type='submit') Zatwierd&zacute;
+
+    .row
+        a(href='/') Powr&oacute;t do wyboru tabeli
+
+        
+
